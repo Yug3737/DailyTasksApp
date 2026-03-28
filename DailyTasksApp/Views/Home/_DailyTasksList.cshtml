@@ -1,0 +1,58 @@
+@model DailyTasks
+@{
+}
+
+<div class="partial-container">
+    <div id="gif-path">@Model.GifPath</div>
+    <div id="day-and-edit-button-div">
+        <div id="day-of-week"><h3>@Model.DayOfWeek</h3></div>
+        <a class="btn btn-outline-info mx-2 mx-sm-1" onclick="showEditTasksModal('@Model.Id')" id="edit-single-tasks-link">
+            <i class="bi bi-upc-scan"></i> Edit Single Tasks
+        </a>
+    </div>
+    
+    
+    @* Modal for editing single tasks *@
+    <div id="modal-overlay">
+        <div id="edit-modal-body">
+            @*  partial gets injected here> *@
+        </div>
+    </div>
+    
+    <div id="daily-tasks-list">
+        <form method="post" asp-action="SaveCheckedDailyTasks" asp-controller="DailyTasks">
+            <input type="hidden" name="DailyTasksId" value="@Model.Id" />
+            
+            @foreach (var task in @Model.TaskList)
+            {
+                <div class="weekly-grid">
+                    <input type="checkbox"
+                           name="SingleTaskIds"
+                           value="@task.Id"
+                           @(task.IsDone ? "checked" : "") />
+                    <label id="daily-task-title">@task.Title</label>
+                </div>
+            }
+            
+            <button type="submit" id="save-daily-task">Save done tasks</button>
+        </form>
+    </div>
+    <div id="message">@Model.Message</div>
+</div>
+
+<script>
+    function showEditTasksModal(dailyTaskId){
+        $.ajax({
+            url: "/DailyTasks/ShowEditTasksModal", // controller action
+            data: {currentDailyTaskId: dailyTaskId },
+            dataType: 'html', // we expect HTML in return
+            beforeSend: function(){
+                // optional:  can show a loader here if needed
+            },
+            success: function(data){
+                $('#edit-modal-body').html(data); // load response data into modal body
+                $('#modal-overlay').css('display', 'flex'); // show the modal
+            }
+        });
+    }
+</script>

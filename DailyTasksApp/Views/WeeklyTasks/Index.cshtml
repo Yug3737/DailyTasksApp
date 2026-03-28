@@ -1,0 +1,15 @@
+@{
+    var daysOfWeek = (List<string>)ViewData["DaysOfWeek"];
+}
+
+<h1>Tasks for each day of the week</h1>
+<ul>
+    @for (int i = 0; i < 7; ++i)
+    {
+        <li>
+            <h3>
+                @daysOfWeek[i]
+            </h3>
+        </li>
+    }
+</ul>

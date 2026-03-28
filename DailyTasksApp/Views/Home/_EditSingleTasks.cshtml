@@ -1,0 +1,9 @@
+@model DailyTasks
+<form method="post" asp-action="SaveEditedDailyTasks" asp-controller="DailyTasks">
+    @for (int i = 0; i < @Model.TaskList.Count; ++i)
+    {
+        @Html.HiddenFor(t => t.TaskList[i].Id)
+        @Html.EditorFor(t => t.TaskList[i].Title)
+    }
+    <button id="save-edited-daily-task">Save edited tasks</button>
+</form>
