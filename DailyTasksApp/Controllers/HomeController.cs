@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Mvc;
 using DailyTasksApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -87,10 +88,16 @@ public class HomeController : Controller
 
     private async Task<WeeklyTasks> CreateInitialWeekAsync()
     {
+        var lastMonday = DateTime.Today;
+        while (lastMonday.DayOfWeek != DayOfWeek.Monday)
+        {
+            lastMonday = lastMonday.AddDays(-1);
+        }
+        
         WeeklyTasks newWeeklyTask = new WeeklyTasks()
         {
-            StartDate = DateTime.Today,
-            EndDate = DateTime.Today.AddDays(6),
+            StartDate = lastMonday,
+            EndDate = lastMonday.AddDays(6),
             WorkingDays = 7,
             DailyTasksList = new List<DailyTasks>()
         };
