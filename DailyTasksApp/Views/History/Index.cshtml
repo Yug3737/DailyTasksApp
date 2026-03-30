@@ -1,0 +1,27 @@
+@model List<WeeklyTasks>
+@{
+}
+
+<table>
+    <thead>
+        <td>Start Date</td>
+        <td>End Date</td>
+        <td>Tasks Done</td>
+    </thead>
+    @foreach (var pastWeek in Model)
+    {
+        <tr>
+            <td>@pastWeek.StartDate</td>
+            <td>@pastWeek.EndDate</td>
+            @{
+                var tasksDoneThisWeek = 0;
+                for (int i = 0; i < pastWeek.DailyTasksList.Count; i++)
+                {
+                    tasksDoneThisWeek += pastWeek.DailyTasksList[i].TasksDone;
+                }
+            }
+            <td>@tasksDoneThisWeek</td>
+        </tr>
+    }
+</table>
+

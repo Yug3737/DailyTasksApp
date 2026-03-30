@@ -6,9 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var connectionString = builder.Configuration.GetConnectionString("ProdConnection")
-                       ?? throw new InvalidOperationException("Connection string" +
-                                                              "'DefaultConnection' not found.");
+// var connectionString = builder.Configuration.GetConnectionString("ProdConnection")
+//                        ?? throw new InvalidOperationException("Connection string" +
+//                                                               "'DefaultConnection' not found.");
+
+var connectionString = builder.Environment.IsProduction()
+    ? builder.Configuration.GetConnectionString("ProdConnection")
+      ?? throw new InvalidOperationException("ProdConnection not found in configuration.")
+    : builder.Configuration.GetConnectionString("DefaultConnection")
+      ?? throw new InvalidOperationException("DefaultConnection not found in configuration.");
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer((connectionString)));
 var app = builder.Build();
 

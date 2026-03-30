@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DailyTasksApp.Models;
 
 public class DailyTasks
@@ -6,7 +8,9 @@ public class DailyTasks
     public string DayOfWeek { get; set; }
     public string Message { get; set; }
     public string GifPath { get; set; }
-    public int TasksDone { get; set; }
+
+    [NotMapped] 
+    public int TasksDone => TaskList?.Count(t => t.IsDone) ?? 0;
     public List<SingleTask> TaskList { get; set; }
     
     public Guid WeeklyTasksId { get; set; }

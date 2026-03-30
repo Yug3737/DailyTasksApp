@@ -62,7 +62,6 @@ public class HomeController : Controller
                 DayOfWeek = oldDailyTask.DayOfWeek,
                 Message = oldDailyTask.Message,
                 GifPath = oldDailyTask.GifPath,
-                TasksDone = 0,
                 TaskList = new List<SingleTask>()
             };
             
@@ -126,7 +125,6 @@ public class HomeController : Controller
                 DayOfWeek = day,
                 Message = "Let's get started!",
                 GifPath = "",
-                TasksDone = 0,
                 TaskList = new List<SingleTask>()
             };
 
