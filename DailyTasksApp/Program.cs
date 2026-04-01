@@ -10,26 +10,11 @@ builder.Services.AddControllersWithViews();
 //                        ?? throw new InvalidOperationException("Connection string" +
 //                                                               "'DefaultConnection' not found.");
 
-var connectionString = builder.Environment.IsProduction()
-    ? builder.Configuration.GetConnectionString("ProdConnection")
-      ?? throw new InvalidOperationException("ProdConnection not found in configuration.")
-    : builder.Configuration.GetConnectionString("DefaultConnection")
-      ?? throw new InvalidOperationException("DefaultConnection not found in configuration.");
+var connectionString = builder.Configuration.GetConnectionString("ProdConnection") 
+    ?? throw new InvalidOperationException("ProdConnection not found in configuration");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer((connectionString)));
 var app = builder.Build();
-
-// try
-// {
-//     using var scope = app.Services.CreateScope();
-//     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-//     db.Database.CanConnect();
-// }
-// catch (Exception ex)
-// {
-//     Console.WriteLine($"DB ERROR: {ex.Message}");
-//     throw;
-// }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

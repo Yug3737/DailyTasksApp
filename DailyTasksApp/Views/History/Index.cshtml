@@ -11,8 +11,8 @@
     @foreach (var pastWeek in Model)
     {
         <tr>
-            <td>@pastWeek.StartDate</td>
-            <td>@pastWeek.EndDate</td>
+            <td>@pastWeek.StartDate.ToString("mmm/dd/yyyy")</td>
+            <td>@pastWeek.EndDate.ToString("mmm/dd/yyyy")</td>
             @{
                 var tasksDoneThisWeek = 0;
                 for (int i = 0; i < pastWeek.DailyTasksList.Count; i++)
