@@ -1,27 +1,43 @@
 @model List<WeeklyTasks>
 @{
+    var successfulWeekThreshold = 0.5;
 }
 
-<table>
-    <thead>
+<div class="table-responsive">
+    <table class="table table-dark table-hover table-striped ">
+        <caption>List of past weeks' task completion data</caption>
+        <thead class="thead-dark">
         <td>Start Date</td>
         <td>End Date</td>
         <td>Tasks Done</td>
-    </thead>
-    @foreach (var pastWeek in Model)
-    {
-        <tr>
-            <td>@pastWeek.StartDate.ToString("mmm/dd/yyyy")</td>
-            <td>@pastWeek.EndDate.ToString("mmm/dd/yyyy")</td>
-            @{
-                var tasksDoneThisWeek = 0;
-                for (int i = 0; i < pastWeek.DailyTasksList.Count; i++)
-                {
-                    tasksDoneThisWeek += pastWeek.DailyTasksList[i].TasksDone;
+        <td>Percent Completion</td>
+        </thead>
+        @foreach (var pastWeek in Model)
+        {
+            <tr>
+                <td>
+                    <a >
+                        @pastWeek.StartDate.ToString("MM-dd-yyyy")
+                    </a>
+                </td>
+                <td>@pastWeek.EndDate.ToString("MM-dd-yyyy")</td>
+                @{
+                    var tasksDoneThisWeek = 0;
+                    var totalTasksThisWeek = 0;
+                    for (int i = 0; i < pastWeek.DailyTasksList.Count; i++)
+                    {
+                        tasksDoneThisWeek += pastWeek.DailyTasksList[i].TasksDone;
+                        totalTasksThisWeek += pastWeek.DailyTasksList[i].TaskList.Count;
+                    }
                 }
-            }
-            <td>@tasksDoneThisWeek</td>
-        </tr>
-    }
-</table>
+                @{
+                    // var percentCompletion = decimal.Round((tasksDoneThisWeek / totalTasksThisWeek) * 100, 2, MidpointRounding.ToZero);
+                    var percentCompletion = (tasksDoneThisWeek / (float)totalTasksThisWeek * 100).ToString("#.##");
+                }
+                <td>@tasksDoneThisWeek/@totalTasksThisWeek</td>
+                <td>@percentCompletion%</td>
+            </tr>
+        }
+    </table>
+</div>
 
