@@ -6,7 +6,9 @@
     <div id="gif-path">@Model.GifPath</div>
     <div id="day-and-edit-button-div">
         <div id="day-of-week"><h3>@Model.DayOfWeek</h3></div>
-        <a class="btn btn-outline-info mx-2 mx-sm-1" onclick="showEditTasksModal('@Model.Id')" id="edit-single-tasks-link">
+        <a class="btn btn-outline-info mx-2 mx-sm-1"
+           id="edit-single-tasks-link"
+           data-daily-tasks-id="@Model.Id">
             <i class="bi bi-upc-scan"></i> Edit Single Tasks
         </a>
     </div>
@@ -55,4 +57,13 @@
             }
         });
     }
+    
+    document.addEventListener("DOMContentLoaded", function(){
+        document.querySelectorAll('#edit-single-tasks-link').forEach(function(link){
+            link.addEventListener("click", function(){
+                var id = this.getAttribute("data-daily-tasks-id");
+                showEditTasksModal(id);
+            })
+        })
+    })
 </script>
