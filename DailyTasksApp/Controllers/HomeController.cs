@@ -31,6 +31,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ResetWeek()
     {
         var lastWeeklyTask = await _context.WeeklyTasksTable.OrderByDescending(w => w.EndDate).FirstOrDefaultAsync();
@@ -111,7 +112,7 @@ public class HomeController : Controller
             "CS article reading",
             "Interest programming",
             "TK business reading",
-            "Randon article",
+            "Random article",
             "Gym/5K steps & call a friend",
             "Course study",
             "Gita daily shlokas/meaning writing"

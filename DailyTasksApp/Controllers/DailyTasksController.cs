@@ -19,6 +19,7 @@ public class DailyTasksController : Controller
     // }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SaveCheckedDailyTasks(Guid dailyTasksId, List<Guid> singleTaskIds)
     {
         Console.WriteLine($"Inside save post method");
@@ -54,6 +55,7 @@ public class DailyTasksController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SaveEditedDailyTasks(DailyTasks updatedDailyTasks)
     {
         foreach (var st in updatedDailyTasks.TaskList)
