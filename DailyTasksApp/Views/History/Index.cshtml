@@ -16,7 +16,7 @@
         {
             <tr>
                 <td>
-                    <a >
+                    <a asp-controller="History" asp-action="PastWeek" asp-route-pastWeekId="@pastWeek.Id">
                         @pastWeek.StartDate.ToString("MM-dd-yyyy")
                     </a>
                 </td>
@@ -31,7 +31,6 @@
                     }
                 }
                 @{
-                    // var percentCompletion = decimal.Round((tasksDoneThisWeek / totalTasksThisWeek) * 100, 2, MidpointRounding.ToZero);
                     var percentCompletion = (tasksDoneThisWeek / (float)totalTasksThisWeek * 100).ToString("#.##");
                 }
                 <td>@tasksDoneThisWeek/@totalTasksThisWeek</td>

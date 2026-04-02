@@ -1,0 +1,21 @@
+@model WeeklyTasks
+
+@{
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data for week of @Model.StartDate - @Model.EndDate</title>
+</head>
+<body>
+    <h2>
+        Data for week of @Model.StartDate.ToString("MM-dd-yyyy") to @Model.EndDate.ToString("MM-dd-yyyy")
+    </h2>
+    <div class="weekly-grid">
+        @foreach (var dailyTasks in Model.DailyTasksList)
+        {
+            <partial name="/Views/Home/_DailyTasksList.cshtml" model="@dailyTasks" />
+        }
+    </div>
+</body>
+</html>

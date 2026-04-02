@@ -18,4 +18,14 @@ public class HistoryController : Controller
             .ThenInclude(d => d.TaskList).ToList();
         return View(pastWeeks);
     }
+
+    public IActionResult PastWeek(string pastWeekId)
+    {
+        var pastWeek = _context.WeeklyTasksTable
+            .Where(w => w.Id.ToString() == pastWeekId)
+            .Include(w => w.DailyTasksList)
+            .ThenInclude(d => d.TaskList)
+            .FirstOrDefault();
+        return View(pastWeek);
+    }
 }
