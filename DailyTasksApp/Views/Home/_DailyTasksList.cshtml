@@ -4,14 +4,13 @@
 
 <div class="partial-container">
     <div class="gif-path">@Model.GifPath</div>
-    <div class="day-and-edit-button-div">
+    <div class="d-flex align-items-center justify-content-between mb-3">
         <div class="day-of-week">
-            <h3 class="text-light">@Model.DayOfWeek</h3>
+            <a class="text-light edit-single-tasks-link fs-3 text-decoration-none"
+               style="cursor: pointer"
+               data-daily-tasks-id="@Model.Id"
+               >@Model.DayOfWeek</a>
         </div>
-        <a class="btn btn-outline-info px-2 py-1 mx-2 edit-single-tasks-link"
-           data-daily-tasks-id="@Model.Id">
-            <i class="bi bi-upc-scan"></i> Edit Single Tasks
-        </a>
     </div>
     
     <div class="modal-overlay">
@@ -31,8 +30,9 @@
                            name="SingleTaskIds"
                            value="@task.Id"
                            class="text-light"
+                           id="@task.Id"
                            @(task.IsDone ? "checked" : "") />
-                    <label class="daily-task-title">@task.Title</label>
+                    <label class="daily-task-title" for="@task.Id">@task.Title</label>
                 </div>
             }
             

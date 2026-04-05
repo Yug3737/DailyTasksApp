@@ -3,25 +3,23 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="container">
-    <h1 class="text-light">Superior Performance</h1>
+<h1 class="text-light">Superior Performance</h1>
 
-    @if (Model == null)
+@if (Model == null)
+{
+    <p>You have not created any new tasks for this week. Please click reset tasks to get new tasks for this week.</p>
+}
+
+<div class="d-flex gap-2 m-2">
+    <form method="post" asp-action="ResetWeek" id="reset-week-form">
+        <button type="submit" class="btn btn-outline-warning">Reset Week</button>
+    </form>
+    <a href="/history" id="past-history-link" class="btn btn-outline-info">Past history</a>
+</div>
+
+<div class="weekly-grid">
+    @foreach (var dailyTasks in @Model.DailyTasksList)
     {
-        <p>You have not created any new tasks for this week. Please click reset tasks to get new tasks for this week.</p>
+        <partial name="_DailyTasksList" model="@dailyTasks" />
     }
-    
-    <div class="d-flex gap-2 m-2">
-        <form method="post" asp-action="ResetWeek" id="reset-week-form">
-            <button type="submit" class="btn btn-outline-warning">Reset Week</button>
-        </form>
-        <a href="/history" id="past-history-link" class="btn btn-outline-info">Past history</a>
-    </div>
-    
-    <div class="weekly-grid">
-        @foreach (var dailyTasks in @Model.DailyTasksList)
-        {
-            <partial name="_DailyTasksList" model="@dailyTasks" />
-        }
-    </div>
 </div>

@@ -6,17 +6,22 @@
 <div class="table-responsive">
     <table class="table table-dark table-hover table-striped ">
         <caption>List of past weeks' task completion data</caption>
-        <thead class="thead-dark">
-        <td>Start Date</td>
-        <td>End Date</td>
-        <td>Tasks Done</td>
-        <td>Percent Completion</td>
-        </thead>
+        <tr>
+            <thead class="thead-dark">
+            <th class="fs-5">Start Date</th>
+            <th class="fs-5">End Date</th>
+            <th class="fs-5">Tasks Done</th>
+            <th class="fs-5">Percent Completion</th>
+            </thead>
+        </tr>
         @foreach (var pastWeek in Model)
         {
             <tr>
                 <td>
-                    <a asp-controller="History" asp-action="PastWeek" asp-route-pastWeekId="@pastWeek.Id">
+                    <a asp-controller="History" 
+                       asp-action="PastWeek" 
+                       asp-route-pastWeekId="@pastWeek.Id"
+                       class="text-decoration-none">
                         @pastWeek.StartDate.ToString("MM-dd-yyyy")
                     </a>
                 </td>
