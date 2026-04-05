@@ -1,9 +1,20 @@
+@using DailyTasksApp.Utilities
 @model DailyTasks
+@{
+    var dateToday = Model.WeeklyTask.StartDate.AddDays(Constants.DayOfWeekNumbers[Model.DayOfWeek]);
+}
 <form method="post" asp-action="SaveEditedDailyTasks" asp-controller="DailyTasks">
-    @for (int i = 0; i < @Model.TaskList.Count; ++i)
-    {
-        @Html.HiddenFor(t => t.TaskList[i].Id)
-        @Html.EditorFor(t => t.TaskList[i].Title)
-    }
-    <button id="save-edited-daily-task">Save edited tasks</button>
+    <div class="modal-content">
+        <p class="modal-header text-light fs-3">@dateToday.ToLongDateString()</p>
+        @for (int i = 0; i < @Model.TaskList.Count; ++i)
+        {
+            @Html.HiddenFor(t => t.TaskList[i].Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(t => t.TaskList[i].Title,
+                new { htmlAttributes = new { @class = "form-control p-1 my-1 w-100 text-light bg-dark border-secondary" } })
+        }
+    </div>
+    <div class="d-flex gap-3">
+        <button id="save-edited-tasks-btn" type="submit" class="btn btn-success rounded-2 mt-3">Save edited tasks</button>
+        <button id="cancel-edit-btn" type="button" class="btn btn-outline-light rounded-2 mt-3">Cancel</button>
+    </div>
 </form>

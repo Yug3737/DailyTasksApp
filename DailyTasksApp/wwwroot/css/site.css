@@ -1,141 +1,79 @@
 body{
-  background-color: #0f1117;
-  color: #e5e7eb;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    background-color: #0f1117;
+    color: #e5e76eb;
+    font-family: 'Rubik', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-
 main{
-  flex: 1;
+    flex: 1;
 }
 
-h2{
-  margin-bottom: 20px;
+/* _DailyTasksList.cshtml */
+.gif-path{
+    margin-bottom: 10px;
 }
-
-.weekly-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+.task-completion-msg{
+    margin-top: 12px;
+    font-size: 14px;
+    color: #9ca3af;
 }
-
-.partial-container{
-  background: #1c1f26;
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.partial-container:hover{
-  /*transform: translateY(-4px);*/
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
-}
-
-#day-of-week h3{
-  margin: 0 0 10px 0;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-#daily-tasks-list div{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-#daily-task-title{
-  margin: 0;
-}
-
-#edit-single-tasks{
-  border-radius: 8px;
-  background: #4ade80;
-}
-#day-and-edit-button-div{
-  display: flex;
-  align-items: center;
-}
-#save-daily-task{
-  border-radius: 8px;
-  background: #4ade80;
-  color: #000;
-}
-
-#input[type="checkbox"]{
-  width: 16px;
-  height: 16px;
-  accent-color: #4ade80;
-  cursor: pointer;
-}
-
-#message{
-  margin-top: 12px;
-  font-size: 14px;
-  color: #9ca3af;
-}
-
-#gif-path{
-  margin-bottom: 10px;
-}
-
-.weekly-summary{
-  background: #1c1f26;
-  border-radius: 16px;
-  padding: 22px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
-  width: 320px;
-}
-
-.weekly-summary h3 {
-  margin: 0 0 12px 0;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.container{
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
 /* Single tasks editing modal */
-#modal-overlay{
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
+.modal-overlay{
+    display: none; /* hide by default */
+    position: fixed; /* cover the whole screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* dark backdrop */
+    z-index: 1000; /* sit on top of everything */
+    justify-content: center; /* horizontal centering */
+    align-items: center; /* vertical centering */
+}
+.edit-modal-body{
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 500px;
+    max-width: 90%;
+    z-index: 1001;
+}
+.weekly-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+.partial-container{
+    background: #1c1f26;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.partial-container:hover{
+    /*transform: translateY(-4px);*/
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
 }
 
-#edit-modal-body{
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  width: 500px;
-  max-width: 90%;
-  z-index: 1001;
+.daily-task-title{
+    color: #e5e7eb;
+}
+.single-task-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.single-task-row input[type=checkbox]{
+    width: 14px;
+    height: 14px;
+    accent-color: #3b82f6;
+    cursor: pointer;
+    flex-shrink: 0;
 }
 
-.blurred{
-  filter: blur(4px);
-  pointer-events: none;
-}
-
-#reset-week-form{
-  padding: 10px;
-}
-
-#reset-week-btn{
-  background: #4ade80;
-  color: black;
-  border-radius: 8px;
+#past-history-link{
+    
 }

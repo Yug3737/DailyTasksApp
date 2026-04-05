@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DailyTasksApp.Models;
+using Microsoft.VisualBasic;
 
 namespace DailyTasksApp.Controllers;
 
@@ -22,7 +23,6 @@ public class DailyTasksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SaveCheckedDailyTasks(Guid dailyTasksId, List<Guid> singleTaskIds)
     {
-        Console.WriteLine($"Inside save post method");
         if (!ModelState.IsValid)
         {
             throw new Exception("Daily Tasks model is invalid");
@@ -33,13 +33,19 @@ public class DailyTasksController : Controller
             .Where(x => x.DailyTasksId == dailyTasksId)
             .ToListAsync();
 
-        // foreach (var task in tasks)
         for(int i = 0; i < tasks.Count; ++i)
         {
             var task = tasks[i];
             task.IsDone = dailyTasksId != null && singleTaskIds.Contains(task.Id);
         }
 
+
+        var currentDailyTasks = _context.DailyTasksTable.Where(dailyTask => dailyTask.Id == dailyTasksId)
+            .FirstOrDefaultAsync().Result;
+        var tasksCompletedSoFar = currentDailyTasks.TasksDone;
+        var newMessage = Utilities.Constants.TaskCompletionMessages[tasksCompletedSoFar];
+        currentDailyTasks.Message = newMessage;
+        
         await _context.SaveChangesAsync();
         return RedirectToAction("Index", "Home");
     }
@@ -49,6 +55,7 @@ public class DailyTasksController : Controller
     {
         var currentDailyTask = _context.DailyTasksTable
             .Include(x => x.TaskList)
+            .Include(x => x.WeeklyTask)
             .FirstOrDefault(x => x.Id == currentDailyTaskId);
         // the partial view method, evaluates the logic in the cshtml file and the returns only static html
         return PartialView("~/Views/Home/_EditSingleTasks.cshtml", currentDailyTask);
