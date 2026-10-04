@@ -6,14 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// var connectionString = builder.Configuration.GetConnectionString("ProdConnection")
-//                        ?? throw new InvalidOperationException("Connection string" +
-//                                                               "'DefaultConnection' not found.");
-
 var connectionString = builder.Configuration.GetConnectionString("ProdConnection") 
     ?? throw new InvalidOperationException("ProdConnection not found in configuration");
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer((connectionString)));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

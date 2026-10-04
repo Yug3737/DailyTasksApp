@@ -19,7 +19,7 @@ public class HomeController : Controller
         var weeklyData = await _context.WeeklyTasksTable
             .Include(w => w.DailyTasksList)
             .ThenInclude(d => d.TaskList)
-            .Where(w => w.StartDate <= DateTime.Today && w.EndDate >= DateTime.Today)
+            .Where(w => w.StartDate <= DateOnly.FromDateTime(DateTime.Today)  && w.EndDate >=  DateOnly.FromDateTime(DateTime.Today))
             .FirstOrDefaultAsync();
 
         // for now this means that the last week has passed and
@@ -37,7 +37,7 @@ public class HomeController : Controller
         var lastWeeklyTask = await _context.WeeklyTasksTable.OrderByDescending(w => w.EndDate).FirstOrDefaultAsync();
         
         // only populate data if last end date is before today
-        if (lastWeeklyTask == null || lastWeeklyTask.EndDate > DateTime.Today)
+        if (lastWeeklyTask == null || lastWeeklyTask.EndDate > DateOnly.FromDateTime(DateTime.Today))
             return null;
         var lastWeeklyTaskId = lastWeeklyTask.Id;
         var oldDailyTasks = _context.DailyTasksTable.Where(dt => dt.WeeklyTasksId == lastWeeklyTaskId).Include(dt => dt.TaskList);
@@ -94,10 +94,10 @@ public class HomeController : Controller
             lastMonday = lastMonday.AddDays(-1);
         }
         
-        WeeklyTasks newWeeklyTask = new WeeklyTasks()
+        WeeklyTasks newWeeklyTask = new WeeklyTasks
         {
-            StartDate = lastMonday,
-            EndDate = lastMonday.AddDays(6),
+            StartDate = DateOnly.FromDateTime(lastMonday),
+            EndDate = DateOnly.FromDateTime(lastMonday.AddDays(6)),
             WorkingDays = 7,
             DailyTasksList = new List<DailyTasks>()
         };
@@ -108,14 +108,14 @@ public class HomeController : Controller
         var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
         var genericTaskTitles = new List<string>
         {
-            "Literature Reading",
-            "CS article reading",
-            "Interest programming",
-            "TK business reading",
-            "Random article",
-            "Gym/5K steps & call a friend",
-            "Course study",
-            "Gita daily shlokas/meaning writing"
+            "Task 1",
+            "Task 2",
+            "Task 3",
+            "Task 4",
+            "Task 5",
+            "Task 6",
+            "Task 7",
+            "Task 8"
         };
 
         foreach (var day in days)
