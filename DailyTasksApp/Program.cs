@@ -1,4 +1,6 @@
 using DailyTasksApp;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,17 @@ var connectionString = builder.Configuration.GetConnectionString("ProdConnection
     ?? throw new InvalidOperationException("ProdConnection not found in configuration");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.SlidingExpiration = true;
+    options.AccessDeniedPath = "/Home/AccessDenied";
+});
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,9 +36,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.MapStaticAssets().AllowAnonymous();
 
 app.MapControllerRoute(
         name: "default",
