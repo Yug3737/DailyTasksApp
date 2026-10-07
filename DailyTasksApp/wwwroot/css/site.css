@@ -65,7 +65,7 @@ main{
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 .single-task-row input[type=checkbox]{
     width: 14px;

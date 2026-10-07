@@ -3,19 +3,20 @@
 }
 
 <div class="partial-container">
-    <div class="gif-path">@Model.GifPath</div>
+    @* <div class="gif-path"> *@
+    @*     <img src="@Model.GifPath" alt="anime GIF for this day of the week" /> *@
+    @* </div> *@
     <div class="d-flex align-items-center justify-content-between mb-3">
-        <div class="day-of-week">
-            <a class="text-light edit-single-tasks-link fs-3 text-decoration-none"
-               style="cursor: pointer"
-               data-daily-tasks-id="@Model.Id"
-               >@Model.DayOfWeek</a>
-        </div>
+        <a class="text-light edit-single-tasks-link fs-3 text-decoration-none align-items-center"
+           style="cursor: pointer"
+           data-daily-tasks-id="@Model.Id"
+        >@Model.DayOfWeek</a>
+        <p class="text-light fs-3 align-items-center mb-0">@Model.TasksDone/@Model.TaskList.Count</p>
     </div>
     
     <div class="modal-overlay">
         <div class="edit-modal-body rounded p-4 shadow bg-dark">
-            @*  partial gets injected here> *@
+            @*  partial gets injected here *@
         </div>
     </div>
     

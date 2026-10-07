@@ -1,9 +1,11 @@
 ﻿
-<form method="post" asp-action="Login" asp-controller="Account">
-    <div>
-        <div asp-validation-summary="All" class="text-info"></div>
-        <label for="password" class="form-label text-light">Password please ...</label>
-        <input id="password" type="password" name="password" class="form-control"/>
-        <button type="submit" class="btn btn-primary">Login</button>
+<div class="row justify-content-center" id="login-container">
+    <div class="col-md-4">
+        <form method="post" asp-action="Login" asp-controller="Account">
+            <div asp-validation-summary="All" class="text-info mb-3"></div>
+            <label for="password" class="form-label text-light mb-3">Password please ...</label>
+            <input id="password" type="password" name="password" class="form-control mb-3 "/>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
     </div>
-</form>
+</div>
