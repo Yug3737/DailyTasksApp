@@ -15,7 +15,9 @@ public class HistoryController : Controller
     {
         var pastWeeks = _context.WeeklyTasksTable
             .Include(w => w.DailyTasksList)
-            .ThenInclude(d => d.TaskList).ToList();
+            .ThenInclude(d => d.TaskList)
+            .OrderByDescending(w => w.StartDate)
+            .ToList();
         return View(pastWeeks);
     }
 

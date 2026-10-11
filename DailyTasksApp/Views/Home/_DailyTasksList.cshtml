@@ -24,7 +24,7 @@
         <form method="post" asp-action="SaveCheckedDailyTasks" asp-controller="DailyTasks">
             <input type="hidden" name="DailyTasksId" value="@Model.Id" />
             
-            @foreach (var task in Model.TaskList)
+            @foreach (var task in Model.TaskList.OrderBy(x => x.Title))
             {
                 <div class="single-task-row">
                     <input type="checkbox"
