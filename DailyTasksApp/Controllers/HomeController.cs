@@ -119,7 +119,7 @@ public class HomeController : Controller
             {
                 WeeklyTasksId = newWeeklyTask.Id,
                 DayOfWeek = day,
-                Message = "Let's get started!",
+                Message = "Let's get started! 🚀",
                 GifPath = "",
                 TaskList = new List<SingleTask>()
             };
@@ -173,7 +173,7 @@ public class HomeController : Controller
             {
                 WeeklyTasksId = newWeeklyTask.Id,
                 DayOfWeek = day,
-                Message = "Let's get started!",
+                Message = "Let's get started! 🚀",
                 GifPath = "",
                 TaskList = new List<SingleTask>()
             };

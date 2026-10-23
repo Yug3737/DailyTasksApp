@@ -34,12 +34,12 @@
                         tasksDoneThisWeek += pastWeek.DailyTasksList[i].TasksDone;
                         totalTasksThisWeek += pastWeek.DailyTasksList[i].TaskList.Count;
                     }
-                }
-                @{
-                    var percentCompletion = (tasksDoneThisWeek / (float)totalTasksThisWeek * 100).ToString("#.##");
+                    var fractionCompletion = ((double)tasksDoneThisWeek / totalTasksThisWeek);
+                    var percentCompletionDisplay = fractionCompletion.ToString("P2");
+                    var message = fractionCompletion == 1.00 ? "Holy moly 😲" : fractionCompletion >= .50 ? "Great going 👍" : "Tear apart next week 🔥";
                 }
                 <td>@tasksDoneThisWeek/@totalTasksThisWeek</td>
-                <td>@percentCompletion%</td>
+                <td>@percentCompletionDisplay <span>@message</span></td>
             </tr>
         }
     </table>

@@ -14,7 +14,7 @@ var connectionString = builder.Configuration.GetConnectionString("ProdConnection
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.ExpireTimeSpan = TimeSpan.FromHours(6);
     options.SlidingExpiration = true;
     options.AccessDeniedPath = "/Home/AccessDenied";
 });
