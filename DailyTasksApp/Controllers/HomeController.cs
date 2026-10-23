@@ -1,12 +1,9 @@
 using System.Diagnostics;
-using System.Runtime.InteropServices.JavaScript;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using DailyTasksApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace DailyTasksApp.Controllers;
@@ -21,7 +18,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var weeklyData = await _context.WeeklyTasksTable
+        var currentWeek = await _context.WeeklyTasksTable
             .Include(w => w.DailyTasksList)
             .ThenInclude(d => d.TaskList)
             .Where(w => w.StartDate <= DateOnly.FromDateTime(DateTime.Today)  && w.EndDate >=  DateOnly.FromDateTime(DateTime.Today))
@@ -29,10 +26,14 @@ public class HomeController : Controller
 
         // for now this means that the last week has passed and
         // we need to copy last week's tasks to this week
-        if (weeklyData == null)
-            weeklyData = await CreateInitialWeekAsync();
-        
-        return View(weeklyData);
+        if (currentWeek == null)
+        {
+            if (_context.WeeklyTasksTable.Any())
+                currentWeek = await CopyLastWeekAsync();
+            else
+                currentWeek = await CreateInitialWeekAsync();
+        }
+        return View(currentWeek);
     }
 
     [HttpPost]
@@ -91,6 +92,59 @@ public class HomeController : Controller
         return RedirectToAction("Index");
     }
 
+    private async Task<WeeklyTasks> CopyLastWeekAsync()
+    {
+        var lastMonday = DateTime.Today;
+        while (lastMonday.DayOfWeek != DayOfWeek.Monday)
+        {
+            lastMonday = lastMonday.AddDays(-1);
+        }
+        
+        WeeklyTasks newWeeklyTask = new WeeklyTasks
+        {
+            StartDate = DateOnly.FromDateTime(lastMonday),
+            EndDate = DateOnly.FromDateTime(lastMonday.AddDays(6)),
+            WorkingDays = 7,
+            DailyTasksList = new List<DailyTasks>()
+        };
+
+        _context.WeeklyTasksTable.Add(newWeeklyTask);
+        await _context.SaveChangesAsync();
+        var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+        var lastWeekWeeklyTasksId = _context.WeeklyTasksTable.OrderByDescending(x => x.EndDate).Select(x => x.Id).Single();
+        foreach (var day in days)
+        {
+            DailyTasks newDailyTask = new DailyTasks()
+            {
+                WeeklyTasksId = newWeeklyTask.Id,
+                DayOfWeek = day,
+                Message = "Let's get started!",
+                GifPath = "",
+                TaskList = new List<SingleTask>()
+            };
+            
+            _context.DailyTasksTable.Add(newDailyTask);
+            await _context.SaveChangesAsync();
+
+            var lastWeekDailyTaskId = _context.DailyTasksTable.FirstOrDefault(dt => dt.WeeklyTasksId == lastWeekWeeklyTasksId)?.Id;
+            var taskTitlesLastWeek = _context.SingleTaskTable.Where(s => s.DailyTasksId == lastWeekDailyTaskId)
+                .Select(x => x.Title);
+            foreach (var title in taskTitlesLastWeek)
+            {
+                _context.SingleTaskTable.Add(new SingleTask
+                {
+                    Title = title,
+                    IsDone = false,
+                    DailyTask = newDailyTask
+                });
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        return newWeeklyTask;
+    }
+    
     private async Task<WeeklyTasks> CreateInitialWeekAsync()
     {
         var lastMonday = DateTime.Today;
@@ -111,17 +165,7 @@ public class HomeController : Controller
         await _context.SaveChangesAsync();
 
         var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-        var genericTaskTitles = new List<string>
-        {
-            "Task 1",
-            "Task 2",
-            "Task 3",
-            "Task 4",
-            "Task 5",
-            "Task 6",
-            "Task 7",
-            "Task 8"
-        };
+        var genericTaskTitles = new List<string> { "Task 1", "Task 2", "Task 3", "Task 4", "Task 5", "Task 6", "Task 7", "Task 8" };
 
         foreach (var day in days)
         {
