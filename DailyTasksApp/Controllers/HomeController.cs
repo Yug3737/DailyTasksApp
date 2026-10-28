@@ -44,7 +44,10 @@ public class HomeController : Controller
         
         // only populate data if last end date is before today
         if (lastWeeklyTask == null || lastWeeklyTask.EndDate > DateOnly.FromDateTime(DateTime.Today))
-            return null;
+        {
+            ModelState.AddModelError("", "Data for last week does not exist. Cannot reset.");
+            return Redirect("Index");
+        }
         var lastWeeklyTaskId = lastWeeklyTask.Id;
         var oldDailyTasks = _context.DailyTasksTable.Where(dt => dt.WeeklyTasksId == lastWeeklyTaskId).Include(dt => dt.TaskList);
 
@@ -94,6 +97,7 @@ public class HomeController : Controller
 
     private async Task<WeeklyTasks> CopyLastWeekAsync()
     {
+        var lastWeekWeeklyTasksId = _context.WeeklyTasksTable.OrderByDescending(x => x.EndDate).Select(x => x.Id).FirstOrDefault();
         var lastMonday = DateTime.Today;
         while (lastMonday.DayOfWeek != DayOfWeek.Monday)
         {
@@ -112,7 +116,6 @@ public class HomeController : Controller
         await _context.SaveChangesAsync();
         var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
-        var lastWeekWeeklyTasksId = _context.WeeklyTasksTable.OrderByDescending(x => x.EndDate).Select(x => x.Id).Single();
         foreach (var day in days)
         {
             DailyTasks newDailyTask = new DailyTasks()

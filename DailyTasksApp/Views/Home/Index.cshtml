@@ -10,6 +10,9 @@
     <p>You have not created any new tasks for this week. Please click reset tasks to get new tasks for this week.</p>
 }
 
+<div style="color: white">
+    @Html.ValidationSummary()
+</div>
 <div class="d-flex gap-2 m-2">
     <form method="post" asp-action="ResetWeek" id="reset-week-form">
         <button type="submit" class="btn btn-outline-warning">Reset Week</button>
